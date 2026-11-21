@@ -431,3 +431,110 @@ footer.site-foot{flex-direction:column;align-items:stretch;gap:28px;padding-bloc
   .series-meta{max-width:none}
   .series-meta p{white-space:nowrap}
 }
+
+/* ===================================================================
+   VERSION TÉLÉPHONE (≤ 760 px) — n'affecte pas l'ordinateur
+   =================================================================== */
+@media (max-width:760px){
+  :root{--gut:18px}
+  body{font-size:15px}
+  .grain{opacity:.13}
+
+  /* menu : barre lisible */
+  nav{mix-blend-mode:normal;color:var(--paper);background:linear-gradient(180deg,rgba(3,3,3,.92),rgba(3,3,3,.75));
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:calc(12px + env(safe-area-inset-top,0px)) var(--gut) 12px;border-bottom:1px solid var(--line)}
+  nav .logo{font-size:14px}
+  nav .logo svg{fill:var(--paper)}
+  nav ul{gap:16px;font-size:11px}
+  nav a::after{bottom:-4px}
+
+  /* fond animé plus discret pour que le texte se lise */
+  #fluid{opacity:.55}
+  .hero::before,.page-hero::before{background:linear-gradient(180deg,rgba(3,3,3,.35) 0%,rgba(3,3,3,.15) 35%,var(--ink) 100%)}
+  .hero .mono,.page-hero .mono{color:var(--paper);opacity:.8;text-shadow:0 0 10px var(--ink),0 0 2px var(--ink)}
+  .hero-top p,.intro p{text-shadow:0 0 14px var(--ink),0 0 4px var(--ink);font-size:16px;line-height:1.5}
+
+  /* accueil */
+  .hero{min-height:auto;padding-block:96px 32px}
+  .hero-top{padding-right:0;gap:12px;margin-bottom:56px}
+  .stars{display:none}
+  .name{font-size:clamp(3rem,19vw,6rem)}
+  .hero-bottom{align-items:center;margin-top:24px}
+  .roles{gap:8px}
+  .chip{padding:7px 12px;font-size:11px}
+  .badge{width:80px;height:80px}
+  .marquee{padding-block:14px}
+  .marquee-track{font-size:30px;gap:24px}
+
+  /* pages intérieures : titre qui tient dans l'écran */
+  .page-hero{padding-block:104px 36px;gap:20px}
+  .page-title{font-size:min(var(--fs,20vw),calc((100vw - 2 * var(--gut)) / var(--len,6) * 1.18));letter-spacing:-.04em}
+  .intro{gap:16px}
+  .filters{gap:6px}
+
+  /* titres de sections */
+  section{padding-block:56px}
+  .sec-head{margin-bottom:28px;padding-bottom:12px;gap:6px}
+  .sec-head h2{font-size:26px}
+
+  /* domaines (accueil) */
+  .disciplines{gap:40px}
+  .disc{gap:12px}
+  .disc .frame{aspect-ratio:16/11}
+  .disc h3{font-size:38px}
+
+  /* fiches projets (vidéo / montage) */
+  .cross{gap:64px}
+  .cross-item,.cross-item:nth-child(even){gap:18px}
+  .cross-title{gap:6px 14px}
+  .cross-title h3{font-size:clamp(26px,8.4vw,36px);line-height:.95}
+  .big-count{font-size:30px}
+  .cross-info{gap:12px}
+  .cross-info p{font-size:15px;line-height:1.55}
+  .specs,.cross-item .specs{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
+  .specs div:nth-child(3){grid-column:1 / -1}
+  .specs div{padding-block:10px}
+  .specs dd{font-size:15px;line-height:1.4}
+  .links{gap:10px 18px}
+  .link{font-size:11px}
+  .stack{width:calc(100% - 14px);margin-top:12px}
+  .stack-count{font-size:10px;padding:6px 10px;left:10px;bottom:10px}
+  .reels.mini .play{width:30px;height:30px}
+  .reels.mini.three.solo .frame{width:min(70%,260px)}
+  .timeline{padding:10px}
+
+  /* liste de vidéos dans la fenêtre "voir tout" */
+  .vmodal-box{padding-block:calc(70px + env(safe-area-inset-top,0px)) 40px}
+  .vm-title{font-size:34px}
+  .yt-grid{gap:28px}
+  .yt h4{font-size:17px}
+
+  /* page photo : séries */
+  .series{padding-block:52px 0}
+  .series-head{gap:10px;padding-bottom:14px;margin-bottom:16px}
+  .series-title{font-size:44px;line-height:.92}
+  .series-meta{gap:6px}
+  .series-meta p{font-size:14px;white-space:normal}
+  .car-nav{display:none}
+  .carousel{grid-auto-columns:72%;--cg:10px;scroll-padding-left:0}
+  .carousel .ph{aspect-ratio:4/5}
+  .cap{gap:8px;font-size:10px;letter-spacing:.04em}
+  .cap span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cap span:last-child{flex:none}
+
+  /* visionneuse photo */
+  .lightbox{padding:calc(64px + env(safe-area-inset-top,0px)) 12px calc(24px + env(safe-area-inset-bottom,0px));gap:14px}
+  .lightbox .ph,.lightbox .cap{width:min(calc(100vw - 24px),calc(64vh * var(--arn,.8)))}
+  .lb-close{top:calc(12px + env(safe-area-inset-top,0px));right:12px}
+
+  /* à propos */
+  .about{gap:32px}
+  .about .lead{font-size:24px}
+  .shape{max-width:220px;margin:0 auto 24px}
+
+  /* bas de page */
+  .next{padding-block:56px}
+  .next-title{font-size:clamp(2.4rem,14vw,4rem)}
+  footer.site-foot{gap:22px;padding-block:36px 32px}
+  .foot-contact{gap:12px}
+}

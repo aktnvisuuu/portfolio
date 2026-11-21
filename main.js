@@ -218,3 +218,27 @@ void main(){
     else{const tick=(now)=>{tc.textContent=fmt((now%CYCLE)/CYCLE*SEQ);requestAnimationFrame(tick);};requestAnimationFrame(tick);}
   }
 })();
+
+/* ---------- téléphone : les grands titres tiennent toujours dans l'écran ---------- */
+(() => {
+  const mq = matchMedia('(max-width:760px)');
+  const sel = '.name, .page-title, .series-title, .next-title, .cross-title h3, .disc h3, .vm-title';
+  const fit = () => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.style.fontSize = '';
+      if (!mq.matches) return;
+      for (let k = 0; k < 6; k++) {
+        const box = el.clientWidth, need = el.scrollWidth;
+        if (need <= box + 1) break;
+        const cur = parseFloat(getComputedStyle(el).fontSize);
+        el.style.fontSize = Math.floor(cur * box / need * 0.98) + 'px';
+      }
+    });
+  };
+  const run = () => requestAnimationFrame(fit);
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(run);
+  addEventListener('resize', run);
+  mq.addEventListener ? mq.addEventListener('change', run) : mq.addListener(run);
+  document.addEventListener('click', e => { if (e.target.closest('.stack')) setTimeout(run, 30); });
+  run();
+})();
