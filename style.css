@@ -21,7 +21,7 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:1px dashed var(--paper);outline-offset:4px}
 
 /* grain global animé */
-.grain{position:fixed;inset:-50%;pointer-events:none;z-index:75;opacity:.22;background-image:var(--noise);background-size:220px;animation:grain 1.4s steps(5) infinite}
+.grain{position:fixed;inset:-50%;pointer-events:none;z-index:75;will-change:transform;contain:strict;opacity:.22;background-image:var(--noise);background-size:220px;animation:grain 1.4s steps(5) infinite}
 @keyframes grain{
   0%{transform:translate(0,0)}20%{transform:translate(-7%,4%)}40%{transform:translate(5%,-6%)}60%{transform:translate(-3%,8%)}80%{transform:translate(8%,2%)}100%{transform:translate(0,0)}}
 
@@ -537,4 +537,10 @@ footer.site-foot{flex-direction:column;align-items:stretch;gap:28px;padding-bloc
   .next-title{font-size:clamp(2.4rem,14vw,4rem)}
   footer.site-foot{gap:22px;padding-block:36px 32px}
   .foot-contact{gap:12px}
+}
+
+/* téléphone : zones tactiles du menu plus grandes */
+@media (max-width:760px){
+  nav ul a{display:inline-block;padding:8px 0}
+  nav .logo{padding-block:6px}
 }

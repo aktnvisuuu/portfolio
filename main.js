@@ -73,8 +73,10 @@ void main(){
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
     const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
     const uR=gl.getUniformLocation(pr,'r'),uT=gl.getUniformLocation(pr,'t'),uM=gl.getUniformLocation(pr,'m');
-    const resize=()=>{cv.width=Math.max(1,cv.clientWidth*.5|0);cv.height=Math.max(1,cv.clientHeight*.5|0);gl.viewport(0,0,cv.width,cv.height);};
-    resize();addEventListener('resize',resize);
+    const isMob=matchMedia('(max-width:760px)').matches, RES=isMob?.38:.5, STEP=isMob?55:40;
+    let lastW=0,lastH=0,rT=0;
+    const resize=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(w===lastW&&Math.abs(h-lastH)<120)return;lastW=w;lastH=h;cv.width=Math.max(1,w*RES|0);cv.height=Math.max(1,h*RES|0);gl.viewport(0,0,cv.width,cv.height);};
+    resize();addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(resize,150);});
     let visible=true;
     new IntersectionObserver(e=>{visible=e[0].isIntersecting;}).observe(cv);
     const t0=performance.now();
@@ -86,7 +88,7 @@ void main(){
       gl.drawArrays(gl.TRIANGLES,0,3);
     };
     if(reduce){draw(0);addEventListener('resize',()=>draw(0));}
-    else{let last=0;const loop=(now)=>{if(visible&&now-last>40){draw(now);last=now;}requestAnimationFrame(loop);};requestAnimationFrame(loop);}
+    else{let last=0;const loop=(now)=>{if(visible&&!document.hidden&&now-last>STEP){draw(now);last=now;}requestAnimationFrame(loop);};requestAnimationFrame(loop);}
   }
 
   /* ---------- pointeur + curseur ---------- */
@@ -108,12 +110,12 @@ void main(){
       e.setAttribute('class','ring');svg.appendChild(e);
     }
     const rings=[...svg.children];
-    if(!reduce){const spin=(now)=>{rings.forEach((r,i)=>{r.style.transform=`rotate(${(now/160+i*13)%360}deg)`;});requestAnimationFrame(spin);};requestAnimationFrame(spin);}
+    if(!reduce){let ringsOn=false;new IntersectionObserver(e=>{ringsOn=e[0].isIntersecting;}).observe(svg);const spin=(now)=>{if(ringsOn)rings.forEach((r,i)=>{r.style.transform=`rotate(${(now/160+i*13)%360}deg)`;});requestAnimationFrame(spin);};requestAnimationFrame(spin);}
     else rings.forEach((r,i)=>r.style.transform=`rotate(${i*13}deg)`);
   }
 
   /* ---------- texture qui vibre ---------- */
-  if(!reduce){let b=1;setInterval(()=>{b=b%3+1;root.dataset.b=b;},420);}
+  if(!reduce){let b=1;setInterval(()=>{if(document.hidden)return;b=b%3+1;root.dataset.b=b;},420);}
 
   /* ---------- copier l'email ---------- */
   const btn=document.getElementById('copy'),mail=document.getElementById('email');
@@ -215,7 +217,7 @@ void main(){
     const SEQ=92,CYCLE=30000,FPS=25;
     const fmt=(sec)=>{const f=Math.floor((sec%1)*FPS),s=Math.floor(sec)%60,m=Math.floor(sec/60);return `00:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(f).padStart(2,'0')}`;};
     if(reduce)tc.textContent=fmt(0);
-    else{const tick=(now)=>{tc.textContent=fmt((now%CYCLE)/CYCLE*SEQ);requestAnimationFrame(tick);};requestAnimationFrame(tick);}
+    else{let tcOn=true;new IntersectionObserver(e=>{tcOn=e[0].isIntersecting;}).observe(tc);const tick=(now)=>{if(tcOn)tc.textContent=fmt((now%CYCLE)/CYCLE*SEQ);requestAnimationFrame(tick);};requestAnimationFrame(tick);}
   }
 })();
 
@@ -269,7 +271,7 @@ void main(){
     const SPEED = 22; // pixels par seconde
     const tick = now => {
       const dt = Math.min(now - last, 64) / 1000; last = now;
-      if (visible && now > resumeAt && (!lb || lb.hidden)) {
+      if (visible && !document.hidden && now > resumeAt && (!lb || lb.hidden)) {
         pos += SPEED * dt;
         const h = half(); if (h > 0 && pos >= h) pos -= h;
         ours = true; car.scrollLeft = pos;
