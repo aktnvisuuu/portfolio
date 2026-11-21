@@ -516,7 +516,7 @@ footer.site-foot{flex-direction:column;align-items:stretch;gap:28px;padding-bloc
   .series-meta{gap:6px}
   .series-meta p{font-size:14px;white-space:normal}
   .car-nav{display:none}
-  .carousel{grid-auto-columns:72%;--cg:10px;scroll-padding-left:0}
+  .carousel{grid-auto-columns:42%;--cg:8px;scroll-padding-left:0}
   .carousel .ph{aspect-ratio:4/5}
   .cap{gap:8px;font-size:10px;letter-spacing:.04em}
   .cap span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

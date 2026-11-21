@@ -242,3 +242,40 @@ void main(){
   document.addEventListener('click', e => { if (e.target.closest('.stack')) setTimeout(run, 30); });
   run();
 })();
+
+/* ---------- téléphone : les photos défilent toutes seules (l'ordinateur ne change pas) ---------- */
+(() => {
+  if (!matchMedia('(max-width:760px)').matches) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lb = document.getElementById('lb');
+  document.querySelectorAll('.series .carousel').forEach(car => {
+    const originals = [...car.children];
+    if (car.scrollWidth - car.clientWidth <= 4) return;
+    originals.forEach((el, i) => {
+      const c = el.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; c.classList.remove('shot');
+      c.addEventListener('click', () => originals[i].click());
+      car.appendChild(c);
+    });
+    car.style.scrollSnapType = 'none';
+    const half = () => car.children[originals.length].offsetLeft - originals[0].offsetLeft;
+    let pos = 0, last = performance.now(), resumeAt = 0, visible = true, ours = false;
+    const hold = () => { resumeAt = performance.now() + 3500; };
+    car.addEventListener('touchstart', hold, { passive: true });
+    car.addEventListener('pointerdown', hold);
+    car.addEventListener('scroll', () => { if (ours) { ours = false; return; } pos = car.scrollLeft; hold(); }, { passive: true });
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(car);
+    if (reduce) return;
+    const SPEED = 22; // pixels par seconde
+    const tick = now => {
+      const dt = Math.min(now - last, 64) / 1000; last = now;
+      if (visible && now > resumeAt && (!lb || lb.hidden)) {
+        pos += SPEED * dt;
+        const h = half(); if (h > 0 && pos >= h) pos -= h;
+        ours = true; car.scrollLeft = pos;
+      } else if (pos >= half()) { pos -= half(); ours = true; car.scrollLeft = pos; }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+})();
