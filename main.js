@@ -73,7 +73,7 @@ void main(){
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
     const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
     const uR=gl.getUniformLocation(pr,'r'),uT=gl.getUniformLocation(pr,'t'),uM=gl.getUniformLocation(pr,'m');
-    const isMob=matchMedia('(max-width:760px)').matches, RES=isMob?.38:.5, STEP=isMob?55:40;
+    const RES=.5, STEP=40;
     let lastW=0,lastH=0,rT=0;
     const resize=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(w===lastW&&Math.abs(h-lastH)<120)return;lastW=w;lastH=h;cv.width=Math.max(1,w*RES|0);cv.height=Math.max(1,h*RES|0);gl.viewport(0,0,cv.width,cv.height);};
     resize();addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(resize,150);});
